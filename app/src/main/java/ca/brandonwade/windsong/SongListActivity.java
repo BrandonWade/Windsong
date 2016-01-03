@@ -1,56 +1,50 @@
 package ca.brandonwade.windsong;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 
 public class SongListActivity extends Activity {
+
+    private Cursor externalCursor;
+    private Cursor internalCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
 
-        SongData s1 = new SongData.Builder("Title1")
-                .albumArtist("Artist1")
-                .albumName("Name1")
-                .build();
+//        String[] columns = { MediaStore.Audio.Albums._ID,
+//                             MediaStore.Audio.Albums.ALBUM };
+//
+//        // Read all songs on device (internal & external storage)
+//        externalCursor = managedQuery(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, columns, null, null, null);
+//        internalCursor = managedQuery(MediaStore.Audio.Albums.INTERNAL_CONTENT_URI, columns, null, null, null);
 
-        SongData s2 = new SongData.Builder("Title2")
-                .albumArtist("Artist2")
-                .albumName("Name2")
-                .build();
+        ContentResolver resolver = getContentResolver();
+        Uri externalUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Uri internalUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
 
-        SongData s3 = new SongData.Builder("Title3")
-                .albumArtist("Artist3")
-                .albumName("Name3")
-                .build();
+        externalCursor = resolver.query(externalUri, null, null, null, null);
+        internalCursor = resolver.query(internalUri, null, null, null, null);
 
-        SongData s4 = new SongData.Builder("Title4")
-                .albumArtist("Artist4")
-                .albumName("Name4")
-                .build();
+        ArrayList<SongData> songs = new ArrayList<>();
+        songs.addAll(processDeviceSongs(externalCursor));
+        songs.addAll(processDeviceSongs(internalCursor));
 
-        SongData s5 = new SongData.Builder("Title5")
-                .albumArtist("Artist5")
-                .albumName("Name5")
-                .build();
+        SongData[] songData = new SongData[songs.size()];
+        songData = songs.toArray(songData);
 
-        SongData s6 = new SongData.Builder("Title6")
-                .albumArtist("Artist6")
-                .albumName("Name6")
-                .build();
-
-        SongData s7 = new SongData.Builder("Title7")
-                .albumArtist("Artist7")
-                .albumName("Name7")
-                .build();
-
-        SongData[] songData = { s1, s2, s3, s4, s5, s6, s7 };
         SongDataAdapter adapter = new SongDataAdapter(this, R.layout.song_list_row, songData);
         ListView list = (ListView) findViewById(R.id.song_list);
         View header = getLayoutInflater().inflate(R.layout.song_list_header, null);
@@ -78,5 +72,29 @@ public class SongListActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public ArrayList<SongData> processDeviceSongs(Cursor cursor) {
+        ArrayList<SongData> songList = new ArrayList<>();
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int titleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+            int artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
+
+            do {
+                String songTitle = cursor.getString(titleColumn);
+                String albumArtist = cursor.getString(artistColumn);
+                String albumName = cursor.getString(albumColumn);
+
+                SongData song = new SongData.Builder(songTitle)
+                        .albumArtist(albumArtist)
+                        .albumName(albumName)
+                        .build();
+
+                songList.add(song);
+            } while (cursor.moveToNext());
+        }
+        return songList;
     }
 }
