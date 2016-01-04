@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
- * Created by Brandon W on 2016-01-01.
+ * Custom adapter used to convert SongData objects to display in a ListView.
  */
 public class SongDataAdapter extends ArrayAdapter<SongData> {
 
@@ -31,10 +31,9 @@ public class SongDataAdapter extends ArrayAdapter<SongData> {
             holder = new SongDataHolder();
             convertView = inflater.inflate(R.layout.song_list_row, null);
 
-            holder.songTitle = (TextView) convertView.findViewById(R.id.row_main_text);
-            holder.albumArt = (ImageView) convertView.findViewById(R.id.row_icon);
-            holder.albumArtist = (TextView) convertView.findViewById(R.id.row_sub_text1);
-            holder.albumName = (TextView) convertView.findViewById(R.id.row_sub_text2);
+            holder.icon = (ImageView) convertView.findViewById(R.id.row_icon);
+            holder.mainText = (TextView) convertView.findViewById(R.id.row_main_text);
+            holder.subText = (TextView) convertView.findViewById(R.id.row_sub_text);
 
             convertView.setTag(holder);
         }
@@ -44,19 +43,17 @@ public class SongDataAdapter extends ArrayAdapter<SongData> {
         }
 
         SongData song = data[position];
-        holder.songTitle.setText(song.getSongTitle());
-        holder.albumArt.setImageResource(0); // TODO: Fix this to work with album art
-        holder.albumArtist.setText(song.getAlbumArtist());
-        holder.albumName.setText(song.getAlbumName());
+        holder.icon.setImageResource(0); // TODO: Fix this to work with album art
+        holder.mainText.setText(song.getSongTitle());
+        holder.subText.setText(song.getAlbumArtist() + " - " + song.getAlbumName());
 
         return convertView;
     }
 
     static class SongDataHolder
     {
-        TextView songTitle;
-        ImageView albumArt;
-        TextView albumArtist;
-        TextView albumName;
+        ImageView icon;
+        TextView mainText;
+        TextView subText;
     }
 }

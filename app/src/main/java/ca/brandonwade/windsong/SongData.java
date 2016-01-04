@@ -1,7 +1,7 @@
 package ca.brandonwade.windsong;
 
 /**
- * Created by Brandon W on 2015-12-31.
+ * Object to contain information about an audio file.
  */
 public class SongData {
     // Require
@@ -16,11 +16,10 @@ public class SongData {
         // Required
         private final String songTitle;
 
-        // TODO: Move these to constants
         // Optional
-        private String albumArt    = "";
-        private String albumArtist = "Unknown Artist";
-        private String albumName   = "Unknown Album";
+        private String albumArt;
+        private String albumArtist;
+        private String albumName;
 
         public Builder(String songTitle) {
             this.songTitle = songTitle;

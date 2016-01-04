@@ -13,35 +13,27 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-
+/**
+ * Activity for handling the dispay of the SongList.
+ */
 public class SongListActivity extends Activity {
 
-    private Cursor externalCursor;
-    private Cursor internalCursor;
+    private Cursor mediaCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_list);
 
-//        String[] columns = { MediaStore.Audio.Albums._ID,
-//                             MediaStore.Audio.Albums.ALBUM };
-//
-//        // Read all songs on device (internal & external storage)
-//        externalCursor = managedQuery(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, columns, null, null, null);
-//        internalCursor = managedQuery(MediaStore.Audio.Albums.INTERNAL_CONTENT_URI, columns, null, null, null);
-
+        // Read external audio on device & filter all non-music audio (e.g. Notification sounds)
         ContentResolver resolver = getContentResolver();
         Uri externalUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Uri internalUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+        String queryFilter = MediaStore.Audio.Media.IS_MUSIC + "=1";
+        String orderBy = MediaStore.Audio.Media.TITLE + " ASC";
+        mediaCursor = resolver.query(externalUri, null, queryFilter, null, orderBy);
 
-        externalCursor = resolver.query(externalUri, null, null, null, null);
-        internalCursor = resolver.query(internalUri, null, null, null, null);
-
-        ArrayList<SongData> songs = new ArrayList<>();
-        songs.addAll(processDeviceSongs(externalCursor));
-        songs.addAll(processDeviceSongs(internalCursor));
-
+        // TODO: See if there's a more efficient way than converting to an Array
+        ArrayList<SongData> songs = processDeviceSongs(mediaCursor);
         SongData[] songData = new SongData[songs.size()];
         songData = songs.toArray(songData);
 
