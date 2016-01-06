@@ -1,6 +1,7 @@
 package ca.brandonwade.windsong;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class SongDataAdapter extends ArrayAdapter<SongData> {
         }
 
         SongData song = data[position];
-        holder.icon.setImageResource(0); // TODO: Fix this to work with album art
+//        holder.icon.setImageResource(R.drawable.icon); // TODO: Fix this to work with album art
         holder.mainText.setText(song.getSongTitle());
         holder.subText.setText(song.getAlbumArtist() + " - " + song.getAlbumName());
 

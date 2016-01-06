@@ -1,5 +1,7 @@
 package ca.brandonwade.windsong;
 
+import android.graphics.Bitmap;
+
 /**
  * Object to contain information about an audio file.
  */
@@ -8,7 +10,7 @@ public class SongData {
     private final String songTitle;
 
     // Optional
-    private final String albumArt;
+    private final Bitmap albumArt;
     private final String albumArtist;
     private final String albumName;
 
@@ -17,7 +19,7 @@ public class SongData {
         private final String songTitle;
 
         // Optional
-        private String albumArt;
+        private Bitmap albumArt;
         private String albumArtist;
         private String albumName;
 
@@ -25,7 +27,7 @@ public class SongData {
             this.songTitle = songTitle;
         }
 
-        public Builder albumArt(String art) {
+        public Builder albumArt(Bitmap art) {
             albumArt = art;
             return this;
         }
@@ -59,7 +61,7 @@ public class SongData {
         return this.songTitle;
     }
 
-    public String getAlbumArt() {
+    public Bitmap getAlbumArt() {
         return this.albumArt;
     }
 
