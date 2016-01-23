@@ -44,7 +44,7 @@ public class SongDataAdapter extends ArrayAdapter<SongData> {
         }
 
         SongData song = data[position];
-//        holder.icon.setImageResource(R.drawable.icon); // TODO: Fix this to work with album art
+        holder.icon.setImageBitmap(BitmapFactory.decodeFile(song.getAlbumArt()));
         holder.mainText.setText(song.getSongTitle());
         holder.subText.setText(song.getAlbumArtist() + " - " + song.getAlbumName());
 

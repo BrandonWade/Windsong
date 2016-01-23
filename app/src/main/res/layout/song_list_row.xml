@@ -11,7 +11,6 @@
 
         <ImageView
             android:id="@+id/row_icon"
-            android:src="@drawable/icon"
             android:layout_width="55dp"
             android:layout_height="55dp"
             android:layout_marginLeft="5dp"

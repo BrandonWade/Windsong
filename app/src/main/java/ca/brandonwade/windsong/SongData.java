@@ -10,7 +10,7 @@ public class SongData {
     private final String songTitle;
 
     // Optional
-    private final Bitmap albumArt;
+    private final String albumArt;
     private final String albumArtist;
     private final String albumName;
 
@@ -19,7 +19,7 @@ public class SongData {
         private final String songTitle;
 
         // Optional
-        private Bitmap albumArt;
+        private String albumArt;
         private String albumArtist;
         private String albumName;
 
@@ -27,7 +27,7 @@ public class SongData {
             this.songTitle = songTitle;
         }
 
-        public Builder albumArt(Bitmap art) {
+        public Builder albumArt(String art) {
             albumArt = art;
             return this;
         }
@@ -61,7 +61,7 @@ public class SongData {
         return this.songTitle;
     }
 
-    public Bitmap getAlbumArt() {
+    public String getAlbumArt() {
         return this.albumArt;
     }
 
