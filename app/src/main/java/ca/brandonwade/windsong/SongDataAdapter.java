@@ -44,7 +44,7 @@ public class SongDataAdapter extends ArrayAdapter<SongData> {
         }
 
         SongData song = data[position];
-        holder.icon.setImageBitmap(BitmapFactory.decodeFile(song.getAlbumArt()));
+        holder.icon.setImageBitmap(song.getAlbumArtBitmap());
         holder.mainText.setText(song.getSongTitle());
         holder.subText.setText(song.getAlbumArtist() + " - " + song.getAlbumName());
 

@@ -110,7 +110,6 @@ public class SongListActivity extends Activity {
     public ArrayList<SongData> processDeviceSongs(Cursor cursor, HashMap<String, String> albumArtMap) {
         ArrayList<SongData> songList = new ArrayList<>();
 
-
         if (cursor != null && cursor.moveToFirst()) {
             int titleColumn = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
             int artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);

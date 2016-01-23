@@ -1,16 +1,17 @@
 package ca.brandonwade.windsong;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Object to contain information about an audio file.
  */
 public class SongData {
-    // Require
+    // Required
     private final String songTitle;
 
     // Optional
-    private final String albumArt;
+    private final String albumArtLocation;
     private final String albumArtist;
     private final String albumName;
 
@@ -52,7 +53,7 @@ public class SongData {
         songTitle   = builder.songTitle;
 
         // Optional
-        albumArt    = builder.albumArt;
+        albumArtLocation = builder.albumArt;
         albumArtist = builder.albumArtist;
         albumName   = builder.albumName;
     }
@@ -61,8 +62,34 @@ public class SongData {
         return this.songTitle;
     }
 
-    public String getAlbumArt() {
-        return this.albumArt;
+    public String getAlbumArtLocation() {
+        return this.albumArtLocation;
+    }
+
+    public Bitmap getAlbumArtBitmap() {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(albumArtLocation, options);
+        int imgHeight = options.outHeight;
+        int imgWidth = options.outWidth;
+        int inSampleSize = 1;
+        int iconHeight = 100;
+        int iconWidth = 100;
+
+        // Determine a sample size for scaling down the image (if necessary)
+        if (imgHeight > iconHeight || imgWidth > iconWidth) {
+            final int halfHeight = imgHeight / 2;
+            final int halfWidth = imgWidth / 2;
+
+            while ((halfHeight / inSampleSize) > iconHeight && (halfWidth / inSampleSize) > iconWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = inSampleSize;
+
+        return BitmapFactory.decodeFile(albumArtLocation, options);
     }
 
     public String getAlbumArtist() {
